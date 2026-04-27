@@ -15,6 +15,9 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui"
   },
+  "overrides": {
+    "vite": "^7"
+  },
   "dependencies": {
     "@astrojs/react": "^5.0.4",
     "@astrojs/vercel": "^10.0.5",

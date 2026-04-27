@@ -85,10 +85,9 @@ const stack = [
       <Container>
         <AnimatedReveal>
           <Label as="p" class="mb-6">// Full-stack engineer</Label>
-          <Heading level={1} class="mb-8 whitespace-nowrap">
-            Lucas<br />
-            Bittencourt.<br />
-            <span class="text-accent">I build reliable<br />systems at scale.</span>
+          <Heading level={1} class="mb-8">
+            Lucas Bittencourt.<br />
+            <span class="text-accent block min-h-[3em]">I build <span id="hero-typed">reliable<br />systems at<br />scale.</span><span class="hero-cursor" aria-hidden="true"></span></span>
           </Heading>
           <p class="font-mono text-sm text-fg-muted mb-10 tracking-wide">
             Python · FastAPI · React · Next.js · TypeScript · Docker
@@ -290,3 +289,54 @@ const stack = [
     </footer>
   </main>
 </BaseLayout>
+
+<script>
+  const phrases = [
+    "reliable\nsystems at\nscale.",
+    "code\nthat survives\nproduction.",
+    "software\nthat empowers\npeople.",
+    "elegant\nand resilient\nsolutions.",
+  ];
+
+  const toHTML = (phrase: string, len: number) =>
+    phrase.slice(0, len).replace(/\n/g, "<br>");
+
+  const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+
+  async function typewriter() {
+    const el = document.getElementById("hero-typed") as HTMLSpanElement | null;
+    const cursor = document.querySelector(".hero-cursor") as HTMLSpanElement | null;
+    if (!el || !cursor) return;
+
+    let idx = 0;
+    let charIdx = phrases[0].length;
+
+    await sleep(1800);
+
+    while (true) {
+      cursor.classList.add("typing");
+
+      while (charIdx > 0) {
+        el.innerHTML = toHTML(phrases[idx], --charIdx);
+        await sleep(40);
+      }
+
+      cursor.classList.remove("typing");
+      await sleep(320);
+      cursor.classList.add("typing");
+
+      idx = (idx + 1) % phrases.length;
+      while (charIdx < phrases[idx].length) {
+        el.innerHTML = toHTML(phrases[idx], ++charIdx);
+        await sleep(55);
+      }
+
+      cursor.classList.remove("typing");
+      await sleep(2400);
+    }
+  }
+
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    typewriter();
+  }
+</script>
