@@ -1,0 +1,15 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getPublicRepos } from "@lib/github";
+
+const repos = await getPublicRepos("bittencourt-lucas");
+---
+
+<BaseLayout
+  title="Lucas Bittencourt"
+  description="Full-stack engineer specializing in greenfield products and technical consulting. Python, FastAPI, React, Next.js. Available for freelance work."
+>
+  <main>
+    <p>Coming soon.</p>
+  </main>
+</BaseLayout>

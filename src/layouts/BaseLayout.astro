@@ -1,0 +1,80 @@
+---
+import "@styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  canonicalURL?: string;
+}
+
+const {
+  title,
+  description,
+  ogImage = "/og-default.png",
+  canonicalURL = Astro.url.href,
+} = Astro.props;
+
+const siteName = "Lucas Bittencourt";
+const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Primary meta -->
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(ogImage, Astro.site)} />
+    <meta property="og:site_name" content={siteName} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- JSON-LD Person schema -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Lucas Bittencourt",
+        "url": "https://lbittencourt.dev.br",
+        "jobTitle": "Full-Stack Engineer",
+        "description": "Full-stack engineer specializing in greenfield products and technical consulting. Python/FastAPI, React/Next.js, Docker, Kubernetes.",
+        "knowsAbout": ["Python", "FastAPI", "React", "Next.js", "TypeScript", "Docker", "Kubernetes", "n8n"],
+        "nationality": "Brazilian",
+        "sameAs": ["https://github.com/bittencourt-lucas"]
+      }
+    </script>
+
+    <!-- Security headers via meta (hard headers set at Vercel edge) -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
