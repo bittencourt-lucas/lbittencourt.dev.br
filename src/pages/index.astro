@@ -1,6 +1,15 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getPublicRepos } from "@lib/github";
+import Container from "@components/ui/Container.astro";
+import Section from "@components/ui/Section.astro";
+import Heading from "@components/ui/Heading.astro";
+import Label from "@components/ui/Label.astro";
+import Button from "@components/ui/Button.astro";
+import Badge from "@components/ui/Badge.astro";
+import Card from "@components/ui/Card.astro";
+import Divider from "@components/ui/Divider.astro";
+import AnimatedReveal from "@components/ui/AnimatedReveal.astro";
 
 const _repos = await getPublicRepos("bittencourt-lucas");
 ---
@@ -10,6 +19,40 @@ const _repos = await getPublicRepos("bittencourt-lucas");
   description="Full-stack engineer specializing in greenfield products and technical consulting. Python, FastAPI, React, Next.js. Available for freelance work."
 >
   <main>
-    <p>Coming soon.</p>
+    <Section as="div">
+      <Container>
+        <AnimatedReveal>
+          <Label>// Design system preview</Label>
+          <Heading level={1} class="mt-4 mb-6">Component Library</Heading>
+          <p class="text-fg-muted mb-8 max-w-xl">
+            Phase 3 complete. Tokens, animation system, and all UI primitives are ready.
+          </p>
+          <div class="flex flex-wrap gap-4 mb-12">
+            <Button variant="primary">Primary CTA</Button>
+            <Button variant="ghost">Ghost Button</Button>
+            <Button variant="link">Link →</Button>
+          </div>
+        </AnimatedReveal>
+
+        <Divider class="mb-12" />
+
+        <AnimatedReveal delay={0.1} class="flex flex-wrap gap-2 mb-12">
+          <Badge>Python</Badge>
+          <Badge>FastAPI</Badge>
+          <Badge>React</Badge>
+          <Badge>Next.js</Badge>
+          <Badge>TypeScript</Badge>
+          <Badge variant="accent">Available</Badge>
+        </AnimatedReveal>
+
+        <AnimatedReveal delay={0.2}>
+          <Card>
+            <Label class="mb-2">Project</Label>
+            <Heading level={3} class="mb-2">Sample Card</Heading>
+            <p class="text-fg-muted text-sm">Card component with brutalist border treatment.</p>
+          </Card>
+        </AnimatedReveal>
+      </Container>
+    </Section>
   </main>
 </BaseLayout>

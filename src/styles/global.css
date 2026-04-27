@@ -13,6 +13,7 @@
   /* Typography */
   --font-sans: "Inter", "Helvetica Neue", Arial, sans-serif;
   --font-mono: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+  --font-size-display: clamp(3.5rem, 10vw, 8rem);
 
   /* Spacing scale */
   --spacing-section: 7rem;
@@ -54,6 +55,12 @@
   :focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    [data-reveal] {
+      opacity: 0;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

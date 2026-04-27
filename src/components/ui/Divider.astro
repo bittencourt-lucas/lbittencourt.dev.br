@@ -1,0 +1,10 @@
+---
+interface Props {
+  accent?: boolean;
+  class?: string;
+}
+
+const { accent = false, class: className = "" } = Astro.props;
+---
+
+<hr class:list={["border-0 border-t", accent ? "border-accent" : "border-border", className]} />

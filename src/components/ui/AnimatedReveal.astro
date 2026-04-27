@@ -1,0 +1,24 @@
+---
+interface Props {
+  from?: "bottom" | "left" | "right" | "fade";
+  delay?: number;
+  class?: string;
+  as?: string;
+}
+
+const { from = "bottom", delay = 0, class: className = "", as: Tag = "div" } = Astro.props;
+---
+
+<Tag
+  class:list={[className]}
+  data-reveal
+  data-reveal-from={from}
+  data-reveal-delay={delay > 0 ? delay : undefined}
+>
+  <slot />
+</Tag>
+
+<script>
+  import { initRevealAnimations } from "@lib/animations";
+  initRevealAnimations();
+</script>

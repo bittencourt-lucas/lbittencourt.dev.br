@@ -1,0 +1,25 @@
+---
+interface Props {
+  href?: string;
+  target?: string;
+  class?: string;
+}
+
+const { href, target, class: className = "" } = Astro.props;
+const Tag = href ? "a" : "div";
+const isInteractive = !!href;
+---
+
+<Tag
+  href={isInteractive ? href : undefined}
+  target={isInteractive ? target : undefined}
+  rel={isInteractive && target === "_blank" ? "noopener noreferrer" : undefined}
+  class:list={[
+    "block border border-border bg-bg-secondary p-6 md:p-8",
+    isInteractive &&
+      "transition-all duration-200 hover:-translate-y-1 hover:border-accent/40 cursor-pointer no-underline",
+    className,
+  ]}
+>
+  <slot />
+</Tag>
