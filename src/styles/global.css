@@ -40,6 +40,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
+    scroll-padding-top: 3.5rem;
   }
 
   body {
@@ -55,12 +56,6 @@
   :focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 3px;
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    [data-reveal] {
-      opacity: 0;
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {

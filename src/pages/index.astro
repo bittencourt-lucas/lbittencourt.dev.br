@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getPublicRepos } from "@lib/github";
+import { getCollection } from "astro:content";
 import Container from "@components/ui/Container.astro";
 import Section from "@components/ui/Section.astro";
 import Heading from "@components/ui/Heading.astro";
@@ -10,49 +11,282 @@ import Badge from "@components/ui/Badge.astro";
 import Card from "@components/ui/Card.astro";
 import Divider from "@components/ui/Divider.astro";
 import AnimatedReveal from "@components/ui/AnimatedReveal.astro";
+import ContactForm from "@components/ContactForm";
 
-const _repos = await getPublicRepos("bittencourt-lucas");
+const repos = await getPublicRepos("bittencourt-lucas");
+const allProjects = await getCollection("projects");
+const projects = allProjects
+  .filter((p) => p.data.featured)
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+
+const stack = [
+  {
+    category: "Backend",
+    items: ["Python", "FastAPI", "PostgreSQL", "Redis", "REST APIs"],
+  },
+  {
+    category: "Frontend",
+    items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Astro"],
+  },
+  {
+    category: "Infrastructure",
+    items: ["Docker", "Kubernetes", "Vercel", "AWS", "CI/CD"],
+  },
+  {
+    category: "Automation",
+    items: ["n8n", "Celery", "Webhooks", "Cron jobs"],
+  },
+];
 ---
 
 <BaseLayout
   title="Lucas Bittencourt"
   description="Full-stack engineer specializing in greenfield products and technical consulting. Python, FastAPI, React, Next.js. Available for freelance work."
 >
+  <!-- Fixed nav -->
+  <header
+    class="fixed top-0 inset-x-0 z-50 border-b border-border bg-bg/80 backdrop-blur-sm"
+  >
+    <Container as="nav" class="flex items-center justify-between h-14">
+      <span class="font-mono text-xs tracking-widest uppercase text-fg-muted">
+        Lucas Bittencourt
+      </span>
+      <div class="flex items-center gap-6">
+        <a
+          href="#work"
+          class="hidden md:block font-mono text-xs tracking-widest uppercase text-fg-muted hover:text-fg transition-colors duration-150"
+        >
+          Work
+        </a>
+        <a
+          href="#about"
+          class="hidden md:block font-mono text-xs tracking-widest uppercase text-fg-muted hover:text-fg transition-colors duration-150"
+        >
+          About
+        </a>
+        <a
+          href="#skills"
+          class="hidden md:block font-mono text-xs tracking-widest uppercase text-fg-muted hover:text-fg transition-colors duration-150"
+        >
+          Stack
+        </a>
+        <Button href="#contact" size="sm">Hire me</Button>
+      </div>
+    </Container>
+  </header>
+
   <main>
-    <Section as="div">
+    <!-- ─── Hero ─── -->
+    <section
+      id="hero"
+      class="min-h-svh flex items-center py-24 md:py-32"
+      aria-label="Introduction"
+    >
       <Container>
         <AnimatedReveal>
-          <Label>// Design system preview</Label>
-          <Heading level={1} class="mt-4 mb-6">Component Library</Heading>
-          <p class="text-fg-muted mb-8 max-w-xl">
-            Phase 3 complete. Tokens, animation system, and all UI primitives are ready.
+          <Label as="p" class="mb-6">// Full-stack engineer</Label>
+          <Heading level={1} class="mb-8 whitespace-nowrap">
+            Lucas<br />
+            Bittencourt.<br />
+            <span class="text-accent">I build reliable<br />systems at scale.</span>
+          </Heading>
+          <p class="font-mono text-sm text-fg-muted mb-10 tracking-wide">
+            Python · FastAPI · React · Next.js · TypeScript · Docker
           </p>
-          <div class="flex flex-wrap gap-4 mb-12">
-            <Button variant="primary">Primary CTA</Button>
-            <Button variant="ghost">Ghost Button</Button>
-            <Button variant="link">Link →</Button>
+          <div class="flex flex-wrap gap-4">
+            <Button href="#contact" size="lg">Get in touch</Button>
+            <Button href="#work" variant="ghost" size="lg">View work ↓</Button>
           </div>
         </AnimatedReveal>
+      </Container>
+    </section>
 
-        <Divider class="mb-12" />
+    <Divider />
 
-        <AnimatedReveal delay={0.1} class="flex flex-wrap gap-2 mb-12">
-          <Badge>Python</Badge>
-          <Badge>FastAPI</Badge>
-          <Badge>React</Badge>
-          <Badge>Next.js</Badge>
-          <Badge>TypeScript</Badge>
-          <Badge variant="accent">Available</Badge>
-        </AnimatedReveal>
-
-        <AnimatedReveal delay={0.2}>
-          <Card>
-            <Label class="mb-2">Project</Label>
-            <Heading level={3} class="mb-2">Sample Card</Heading>
-            <p class="text-fg-muted text-sm">Card component with brutalist border treatment.</p>
-          </Card>
-        </AnimatedReveal>
+    <!-- ─── About ─── -->
+    <Section id="about">
+      <Container>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+          <AnimatedReveal>
+            <Label as="p" class="mb-4">// About</Label>
+            <Heading level={2}>
+              Quality-first,<br />by design.
+            </Heading>
+          </AnimatedReveal>
+          <AnimatedReveal delay={0.15} class="flex flex-col gap-5 text-fg-muted leading-relaxed">
+            <p>
+              I'm a Brazilian full-stack engineer focused on greenfield product
+              development and technical consulting. My work spans fintech payment
+              systems, edtech platforms, and high-volume communication
+              infrastructure — systems that need to be fast, reliable, and
+              maintainable years after launch.
+            </p>
+            <p>
+              I write Python backends that don't fall over under load and React
+              frontends that don't frustrate users. I care about the details:
+              structured error handling, typed contracts between layers, proper
+              rate limiting, deployments that are boring on purpose.
+            </p>
+            <p>
+              Most of my best work is under NDA. The case studies below show
+              what I can share.
+            </p>
+          </AnimatedReveal>
+        </div>
       </Container>
     </Section>
+
+    <Divider />
+
+    <!-- ─── Work ─── -->
+    <Section id="work">
+      <Container>
+        <AnimatedReveal class="mb-16">
+          <Label as="p" class="mb-4">// Work</Label>
+          <Heading level={2}>Selected projects.</Heading>
+        </AnimatedReveal>
+
+        {
+          projects.length > 0 && (
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
+              {projects.map((project, i) => (
+                <AnimatedReveal delay={i * 0.1}>
+                  <Card class="flex flex-col gap-0">
+                    <div class="flex flex-wrap gap-2 mb-5">
+                      <Badge variant="accent">{project.data.industry}</Badge>
+                      {project.data.stack.slice(0, 3).map((tech) => (
+                        <Badge>{tech}</Badge>
+                      ))}
+                    </div>
+                    <Heading level={3} class="mb-3">
+                      {project.data.title}
+                    </Heading>
+                    <p class="text-fg-muted text-sm leading-relaxed mb-6">
+                      {project.data.summary}
+                    </p>
+                    <ul class="flex flex-col gap-2 mt-auto">
+                      {project.data.outcomes.map((outcome) => (
+                        <li class="font-mono text-xs text-fg-muted flex gap-3">
+                          <span class="text-accent shrink-0" aria-hidden="true">
+                            →
+                          </span>
+                          {outcome}
+                        </li>
+                      ))}
+                    </ul>
+                  </Card>
+                </AnimatedReveal>
+              ))}
+            </div>
+          )
+        }
+
+        {
+          repos.length > 0 && (
+            <>
+              <AnimatedReveal class="mb-8">
+                <Label as="p">// Open source &amp; personal</Label>
+              </AnimatedReveal>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {repos.map((repo, i) => (
+                  <AnimatedReveal delay={(i % 3) * 0.08}>
+                    <Card href={repo.html_url} target="_blank" class="flex flex-col gap-0">
+                      <div class="flex items-start justify-between gap-4 mb-3">
+                        <p class="font-mono text-sm text-fg font-semibold break-all leading-snug">
+                          {repo.name}
+                        </p>
+                        {repo.stargazers_count > 0 && (
+                          <span class="font-mono text-xs text-fg-muted shrink-0" aria-label={`${repo.stargazers_count} stars`}>
+                            ★ {repo.stargazers_count}
+                          </span>
+                        )}
+                      </div>
+                      {repo.description && (
+                        <p class="text-fg-muted text-xs leading-relaxed mb-4">
+                          {repo.description}
+                        </p>
+                      )}
+                      {repo.language && (
+                        <p class="font-mono text-xs text-fg-muted mt-auto">
+                          {repo.language}
+                        </p>
+                      )}
+                    </Card>
+                  </AnimatedReveal>
+                ))}
+              </div>
+            </>
+          )
+        }
+      </Container>
+    </Section>
+
+    <Divider />
+
+    <!-- ─── Skills ─── -->
+    <Section id="skills">
+      <Container>
+        <AnimatedReveal class="mb-16">
+          <Label as="p" class="mb-4">// Stack</Label>
+          <Heading level={2}>Technical expertise.</Heading>
+        </AnimatedReveal>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+          {
+            stack.map((group, i) => (
+              <AnimatedReveal delay={i * 0.1}>
+                <p class="font-mono text-xs tracking-widest uppercase text-accent mb-5">
+                  {group.category}
+                </p>
+                <ul class="flex flex-col">
+                  {group.items.map((item) => (
+                    <li class="font-mono text-sm text-fg-muted border-b border-border py-2.5 last:border-0">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </AnimatedReveal>
+            ))
+          }
+        </div>
+      </Container>
+    </Section>
+
+    <Divider />
+
+    <!-- ─── Contact ─── -->
+    <Section id="contact">
+      <Container>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+          <AnimatedReveal>
+            <Label as="p" class="mb-4">// Contact</Label>
+            <Heading level={2} class="mb-6">
+              Let's build<br />something.
+            </Heading>
+            <p class="text-fg-muted leading-relaxed max-w-xs">
+              Available for consulting engagements and greenfield product
+              development. Response within 48 hours.
+            </p>
+          </AnimatedReveal>
+          <AnimatedReveal delay={0.1}>
+            <ContactForm client:visible />
+          </AnimatedReveal>
+        </div>
+      </Container>
+    </Section>
+
+    <!-- ─── Footer ─── -->
+    <footer class="border-t border-border py-8">
+      <Container class="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <span class="font-mono text-xs text-fg-muted">© 2026 Lucas Bittencourt</span>
+        <a
+          href="https://github.com/bittencourt-lucas"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-150"
+        >
+          GitHub ↗
+        </a>
+      </Container>
+    </footer>
   </main>
 </BaseLayout>
