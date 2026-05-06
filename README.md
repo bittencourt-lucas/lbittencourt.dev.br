@@ -1,75 +1,72 @@
-# React + TypeScript + Vite
+# lbittencourt.dev.br
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal portfolio and website. Built with Astro 6, React 19, Tailwind CSS v4, and GSAP. Deployed on Vercel.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Framework**: [Astro 6](https://astro.build) — hybrid SSG with React islands
+- **UI**: [React 19](https://react.dev) for interactive components
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com) via PostCSS — configured in `src/styles/global.css`
+- **Animations**: [GSAP](https://gsap.com) with ScrollTrigger
+- **Email**: [Resend](https://resend.com) for contact form delivery
+- **Rate limiting**: [Upstash Redis](https://upstash.com)
+- **Deployment**: [Vercel](https://vercel.com)
 
-## React Compiler
+## Getting Started
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
-
-Note: This will impact Vite dev & build performances.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+cp .env.example .env   # fill in required env vars
+npm run dev            # http://localhost:4321
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Commands
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Command | Description |
+|---|---|
+| `npm run dev` | Start dev server with HMR |
+| `npm run build` | Production build |
+| `npm run preview` | Preview production build locally |
+| `npm run typecheck` | TypeScript + Astro type validation |
+| `npm run lint` | ESLint |
+| `npm run test` | Vitest unit tests (run once) |
+| `npm run test:watch` | Vitest in watch mode |
+| `npm run test:e2e` | Playwright E2E tests (requires built site) |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Environment Variables
+
+Copy `.env.example` to `.env` and fill in:
+
+| Variable | Purpose |
+|---|---|
+| `RESEND_API_KEY` | Resend API key for contact form emails |
+| `RESEND_FROM_EMAIL` | Sender address |
+| `RESEND_TO_EMAIL` | Recipient address |
+| `UPSTASH_REDIS_REST_URL` | Upstash Redis URL for rate limiting |
+| `UPSTASH_REDIS_REST_TOKEN` | Upstash Redis token |
+| `GITHUB_TOKEN` | (Optional) Raises GitHub API rate limit from 60 to 5000 req/hr |
+
+## Project Structure
+
+```
+src/
+  components/       # Reusable Astro + React island components
+    ui/             # Design system primitives (Button, Input, etc.)
+  content/
+    config.ts       # Astro content collection schemas
+    projects/       # MDX case studies
+  layouts/
+    BaseLayout.astro # Root layout: meta, OG tags, JSON-LD, fonts
+  lib/
+    contact.ts      # Contact form validation
+    github.ts       # GitHub API fetch (build-time only)
+  pages/
+    api/
+      contact.ts    # POST endpoint: Resend + rate limiting
+    index.astro     # Home page
+  styles/
+    global.css      # Tailwind v4 @theme tokens + global resets
+e2e/                # Playwright E2E tests
+public/             # Static assets
+vercel.json         # Security headers (HSTS, CSP, X-Frame-Options)
 ```
